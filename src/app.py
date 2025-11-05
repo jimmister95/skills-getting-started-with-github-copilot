@@ -19,6 +19,61 @@ current_dir = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
           "static")), name="static")
 
+# Additional activities to be registered with the API
+_new_activities = {
+    # Sports (2)
+    "Basketball Team": {
+        "description": "Competitive basketball team practicing drills and competing in interschool matches",
+        "schedule": "Mondays, Wednesdays, 4:00 PM - 6:00 PM",
+        "max_participants": 15,
+        "participants": ["alex@mergington.edu"]
+    },
+    "Swimming Club": {
+        "description": "Casual swim practice, technique work, and occasional meets",
+        "schedule": "Tuesdays, Thursdays, 3:30 PM - 5:00 PM",
+        "max_participants": 20,
+        "participants": ["linda@mergington.edu"]
+    },
+
+    # Artistic (2)
+    "Art Club": {
+        "description": "Explore drawing, painting, and mixed media; prepare for gallery shows",
+        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 25,
+        "participants": ["sara@mergington.edu"]
+    },
+    "Drama Club": {
+        "description": "Acting, stagecraft, and production work culminating in seasonal performances",
+        "schedule": "Fridays, 4:00 PM - 6:30 PM",
+        "max_participants": 30,
+        "participants": ["matt@mergington.edu"]
+    },
+
+    # Intellectual (2)
+    "Math Olympiad": {
+        "description": "Problem-solving club focused on contest preparation and advanced topics",
+        "schedule": "Thursdays, 5:00 PM - 6:30 PM",
+        "max_participants": 20,
+        "participants": ["noah@mergington.edu"]
+    },
+    "Debate Team": {
+        "description": "Structured debate practice, public speaking, and tournament participation",
+        "schedule": "Tuesdays, 6:00 PM - 7:30 PM",
+        "max_participants": 18,
+        "participants": ["isabella@mergington.edu"]
+    }
+}
+
+
+@app.on_event("startup")
+def register_additional_activities():
+    # Merge the new activities into the main activities dict when the app starts.
+    existing = globals().get("activities")
+    if isinstance(existing, dict):
+        existing.update(_new_activities)
+    else:
+        # If activities isn't defined yet (module import order), keep for later.
+        globals()["_deferred_activities"] = _new_activities
 # In-memory activity database
 activities = {
     "Chess Club": {
@@ -62,6 +117,28 @@ def signup_for_activity(activity_name: str, email: str):
     # Get the specific activity
     activity = activities[activity_name]
 
+# Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student already signed up for this activity")
+
+
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
+
+
+@app.delete("/activities/{activity_name}/signup")
+def unregister_from_activity(activity_name: str, email: str):
+    """Remove a student from an activity's participant list."""
+    # Validate activity exists
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+
+    activity = activities[activity_name]
+
+    if email not in activity["participants"]:
+        raise HTTPException(status_code=404, detail="Participant not found in activity")
+
+    # Remove participant
+    activity["participants"].remove(email)
+    return {"message": f"Removed {email} from {activity_name}"}

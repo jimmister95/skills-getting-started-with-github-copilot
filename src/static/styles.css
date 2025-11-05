@@ -63,15 +63,73 @@ section h3 {
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #f9f9f9;
+  /* slightly tighter spacing so participant badges fit well */
+  gap: 8px;
 }
 
-.activity-card h4 {
-  margin-bottom: 10px;
-  color: #0066cc;
+/* Participants list styling */
+.participants {
+  margin-top: 12px;
 }
 
-.activity-card p {
+.participants strong {
+  display: block;
   margin-bottom: 8px;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.participants ul {
+  list-style: none; /* hide default bullets */
+  padding-left: 0;
+  margin: 0;
+}
+
+.participants li {
+  background: #ffffff;
+  border: 1px solid #eee;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.participant-email {
+  word-break: break-word;
+}
+
+.participant-delete {
+  background: transparent;
+  border: none;
+  color: #c62828;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.participant-delete:hover {
+  background-color: rgba(198, 40, 40, 0.08);
+}
+
+/* Placeholder when there are no participants */
+.no-participants {
+  color: #666;
+  font-style: italic;
+  padding: 6px 8px;
+  background: #fcfcfc;
+  border: 1px dashed #eee;
+  border-radius: 6px;
+  display: inline-block;
 }
 
 .form-group {
