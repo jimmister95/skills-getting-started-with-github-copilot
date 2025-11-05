@@ -34,7 +34,7 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
                 "max_participants": 20,
                 "participants": ["linda@mergington.edu"]
             },
-
+        
             # Artistic (2)
             "Art Club": {
                 "description": "Explore drawing, painting, and mixed media; prepare for gallery shows",
@@ -48,7 +48,7 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
                 "max_participants": 30,
                 "participants": ["matt@mergington.edu"]
             },
-
+        
             # Intellectual (2)
             "Math Olympiad": {
                 "description": "Problem-solving club focused on contest preparation and advanced topics",
@@ -63,8 +63,8 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
                 "participants": ["isabella@mergington.edu"]
             }
         }
-
-
+        
+        
         @app.on_event("startup")
         def register_additional_activities():
             # Merge the new activities into the main activities dict when the app starts.
