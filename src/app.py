@@ -19,61 +19,61 @@ current_dir = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
           "static")), name="static")
 
-        # Additional activities to be registered with the API
-        _new_activities = {
-            # Sports (2)
-            "Basketball Team": {
-                "description": "Competitive basketball team practicing drills and competing in interschool matches",
-                "schedule": "Mondays, Wednesdays, 4:00 PM - 6:00 PM",
-                "max_participants": 15,
-                "participants": ["alex@mergington.edu"]
-            },
-            "Swimming Club": {
-                "description": "Casual swim practice, technique work, and occasional meets",
-                "schedule": "Tuesdays, Thursdays, 3:30 PM - 5:00 PM",
-                "max_participants": 20,
-                "participants": ["linda@mergington.edu"]
-            },
-        
-            # Artistic (2)
-            "Art Club": {
-                "description": "Explore drawing, painting, and mixed media; prepare for gallery shows",
-                "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
-                "max_participants": 25,
-                "participants": ["sara@mergington.edu"]
-            },
-            "Drama Club": {
-                "description": "Acting, stagecraft, and production work culminating in seasonal performances",
-                "schedule": "Fridays, 4:00 PM - 6:30 PM",
-                "max_participants": 30,
-                "participants": ["matt@mergington.edu"]
-            },
-        
-            # Intellectual (2)
-            "Math Olympiad": {
-                "description": "Problem-solving club focused on contest preparation and advanced topics",
-                "schedule": "Thursdays, 5:00 PM - 6:30 PM",
-                "max_participants": 20,
-                "participants": ["noah@mergington.edu"]
-            },
-            "Debate Team": {
-                "description": "Structured debate practice, public speaking, and tournament participation",
-                "schedule": "Tuesdays, 6:00 PM - 7:30 PM",
-                "max_participants": 18,
-                "participants": ["isabella@mergington.edu"]
-            }
-        }
-        
-        
-        @app.on_event("startup")
-        def register_additional_activities():
-            # Merge the new activities into the main activities dict when the app starts.
-            existing = globals().get("activities")
-            if isinstance(existing, dict):
-                existing.update(_new_activities)
-            else:
-                # If activities isn't defined yet (module import order), keep for later.
-                globals()["_deferred_activities"] = _new_activities
+# Additional activities to be registered with the API
+_new_activities = {
+    # Sports (2)
+    "Basketball Team": {
+        "description": "Competitive basketball team practicing drills and competing in interschool matches",
+        "schedule": "Mondays, Wednesdays, 4:00 PM - 6:00 PM",
+        "max_participants": 15,
+        "participants": ["alex@mergington.edu"]
+    },
+    "Swimming Club": {
+        "description": "Casual swim practice, technique work, and occasional meets",
+        "schedule": "Tuesdays, Thursdays, 3:30 PM - 5:00 PM",
+        "max_participants": 20,
+        "participants": ["linda@mergington.edu"]
+    },
+
+    # Artistic (2)
+    "Art Club": {
+        "description": "Explore drawing, painting, and mixed media; prepare for gallery shows",
+        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 25,
+        "participants": ["sara@mergington.edu"]
+    },
+    "Drama Club": {
+        "description": "Acting, stagecraft, and production work culminating in seasonal performances",
+        "schedule": "Fridays, 4:00 PM - 6:30 PM",
+        "max_participants": 30,
+        "participants": ["matt@mergington.edu"]
+    },
+
+    # Intellectual (2)
+    "Math Olympiad": {
+        "description": "Problem-solving club focused on contest preparation and advanced topics",
+        "schedule": "Thursdays, 5:00 PM - 6:30 PM",
+        "max_participants": 20,
+        "participants": ["noah@mergington.edu"]
+    },
+    "Debate Team": {
+        "description": "Structured debate practice, public speaking, and tournament participation",
+        "schedule": "Tuesdays, 6:00 PM - 7:30 PM",
+        "max_participants": 18,
+        "participants": ["isabella@mergington.edu"]
+    }
+}
+
+
+@app.on_event("startup")
+def register_additional_activities():
+    # Merge the new activities into the main activities dict when the app starts.
+    existing = globals().get("activities")
+    if isinstance(existing, dict):
+        existing.update(_new_activities)
+    else:
+        # If activities isn't defined yet (module import order), keep for later.
+        globals()["_deferred_activities"] = _new_activities
 # In-memory activity database
 activities = {
     "Chess Club": {
